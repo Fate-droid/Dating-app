@@ -1,5 +1,6 @@
 using System;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces;
 
@@ -9,7 +10,7 @@ public interface IMemberRepository
 
     Task<bool> SaveAllAsync();
 
-    Task<IReadOnlyList<Member>> GetMembersAsync();
+    Task<IReadOnlyList<Member>> GetMembersAsync(PagingParams pagingParams);
     Task<Member?> GetMemberByIDAsync(string id);
 
     Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string MemberId);

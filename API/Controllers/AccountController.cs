@@ -1,4 +1,3 @@
-using System;
 using System.Security.Cryptography;
 using System.Text;
 using API.Data;
@@ -24,7 +23,15 @@ public class AccountController(AppDbContext context, iTokenService tokenService)
             DisplayName = registerDto.DisplayName,
             Email = registerDto.Email,
             PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-            PasswordSalt = hmac.Key
+            PasswordSalt = hmac.Key,
+            Member = new Member
+            {
+                DisplayName = registerDto.DisplayName,
+                Gender = registerDto.Gender,
+                City = registerDto.City,
+                Country = registerDto.Country,
+                DateOfBirth = registerDto.DateOfBirth   
+            }
         };
 
         context.Users.Add(user);
@@ -52,5 +59,4 @@ public class AccountController(AppDbContext context, iTokenService tokenService)
     {
         return await context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower());
     }
-
 }
