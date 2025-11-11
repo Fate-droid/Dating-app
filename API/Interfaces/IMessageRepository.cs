@@ -13,7 +13,7 @@ public interface IMessageRepository
 
     Task<Message?> GetMessage(string messageId);
 
-    Task<PaginatedResult<MessageDTO>> GetMessagesForMember();
+    Task<PaginatedResult<MessageDTO>> GetMessagesForMember(MessageParams messageParams);
 
     Task<IReadOnlyList<MessageDTO>> GetMessageThread(string currentMemberId, string RecipientId);
 

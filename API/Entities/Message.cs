@@ -12,7 +12,6 @@ public class Message
 
     public DateTime MessageSent { get; set; } = DateTime.UtcNow;
 
-    public int MyProperty { get; set; }
 
     public bool SenderDeleted { get; set; }
 
