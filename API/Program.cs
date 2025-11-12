@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.Middleware;
 using API.Helpers;
+using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 
 
@@ -30,6 +32,11 @@ builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.
         GetSection("CloudinarySettings"));
+builder.Services.AddIdentityCore<AppUser>(opt =>
+{
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.User.RequireUniqueEmail = true;
+}).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(Options =>
      {
@@ -61,8 +68,9 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<AppDbContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedUser(context);
+    await Seed.SeedUser(userManager);
 }
 
 catch (Exception ex)
