@@ -26,13 +26,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddCors();
 builder.Services.AddScoped<iTokenService, TokenService>();
-builder.Services.AddScoped<IMemberRepository, MemberRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<PresenceTracker>();
-builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.
         GetSection("CloudinarySettings"));
 builder.Services.AddIdentityCore<AppUser>(opt =>
