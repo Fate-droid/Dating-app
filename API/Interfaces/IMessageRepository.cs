@@ -1,4 +1,3 @@
-using System;
 using API.DTOs;
 using API.Entities;
 using API.Helpers;
@@ -18,4 +17,10 @@ public interface IMessageRepository
     Task<IReadOnlyList<MessageDTO>> GetMessageThread(string currentMemberId, string RecipientId);
 
     Task<bool> SaveAllAsync();
+
+    void AddGroup(Group group);
+    Task RemoveConnection(string connectionId);
+    Task<Connection?> GetConnection(string connectionId);
+    Task<Group?> GetMessageGroup(string groupName);
+    Task<Group?> GetGroupForConnection(string connectionId);
 }

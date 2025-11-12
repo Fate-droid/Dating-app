@@ -9,6 +9,7 @@ using API.Middleware;
 using API.Helpers;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
+using API.signalAR;
 
 
 
@@ -29,6 +30,8 @@ builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<LogUserActivity>();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<PresenceTracker>();
 builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.
         GetSection("CloudinarySettings"));
@@ -48,8 +51,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              ValidateIssuer = false,
              ValidateAudience = false
          };
-     }
-    );
+
+         Options.Events = new JwtBearerEvents
+         {
+             OnMessageReceived = context =>
+             {
+                 var accessToken = context.Request.Query["access_token"];
+                 var path = context.HttpContext.Request.Path;
+                 if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                 {
+                     context.Token = accessToken;
+                 }
+                 return Task.CompletedTask;
+             }
+
+         };
+    });
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"))
@@ -66,6 +83,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/messages");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
@@ -74,6 +93,7 @@ try
     var context = services.GetRequiredService<AppDbContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
+    await context.Connections.ExecuteDeleteAsync();
     await Seed.SeedUser(userManager);
 }
 
