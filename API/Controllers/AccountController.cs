@@ -43,7 +43,7 @@ public class AccountController(UserManager<AppUser> userManager, iTokenService t
             }
             return ValidationProblem();
         }
-
+        await userManager.AddToRoleAsync(user, "Member");
         return await user.ToDto(tokenService);
     }
     [HttpPost("login")]

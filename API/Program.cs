@@ -40,7 +40,7 @@ builder.Services.AddIdentityCore<AppUser>(opt =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(Options =>
      {
-        var tokenKey = builder.Configuration["TokenKey"] ?? throw new Exception("Token key not found - Program.cs");
+         var tokenKey = builder.Configuration["TokenKey"] ?? throw new Exception("Token key not found - Program.cs");
          Options.TokenValidationParameters = new TokenValidationParameters
          {
              ValidateIssuerSigningKey = true,
@@ -50,6 +50,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
          };
      }
     );
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"))
+    .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
