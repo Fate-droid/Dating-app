@@ -35,13 +35,4 @@ public class PhotoRepository(AppDbContext context) : IPhotoRepository
         context.Photos.Remove(photo);
     }
 
-    Task<Photo?> IPhotoRepository.GetPhotoById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<IReadOnlyList<PhotoForApprovalDto>> IPhotoRepository.GetUnapprovedPhotos()
-    {
-        throw new NotImplementedException();
-    }
 }

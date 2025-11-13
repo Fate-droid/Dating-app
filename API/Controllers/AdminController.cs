@@ -13,7 +13,7 @@ namespace API.Controllers;
 public class AdminController(UserManager<AppUser> userManager, IUnitOfWork uow, 
     IPhotoService photoService) : BaseApiController
 {
-    [Authorize(Policy = "RequiredAdminRole")]
+    // [Authorize(Policy = "RequiredAdminRole")]
     [HttpGet("users-with-roles")]
     public async Task<ActionResult> GetUsersWithRoles()
     {
@@ -35,7 +35,7 @@ public class AdminController(UserManager<AppUser> userManager, IUnitOfWork uow,
 
     }
 
-    [Authorize(Policy = "ModeratePhotoRole")]
+    // [Authorize(Policy = "ModeratePhotoRole")]
     [HttpPost("edit-roles/{userId}")]
     public async Task<ActionResult<IList<string>>> EditRoles(string userId, [FromQuery] string roles)
     {
@@ -53,12 +53,14 @@ public class AdminController(UserManager<AppUser> userManager, IUnitOfWork uow,
         if (!result.Succeeded) return BadRequest("Failed to remove from roles");
         return Ok(await userManager.GetRolesAsync(user));
     }
+        // [Authorize(Policy = "ModeratePhotoRole")]
+    [HttpGet("photos-to-moderate")]
     public async Task<ActionResult<IEnumerable<Photo>>> GetPhotosForModeration()
     {
         return Ok(await uow.PhotoRepository.GetUnapprovedPhotos());
     }
 
-    [Authorize(Policy = "ModeratePhotoRole")]
+    // [Authorize(Policy = "ModeratePhotoRole")]
     [HttpPost("approve-photo/{photoId}")]
     public async Task<ActionResult> ApprovePhoto(int photoId)
     {
@@ -83,7 +85,7 @@ public class AdminController(UserManager<AppUser> userManager, IUnitOfWork uow,
         return Ok();
     }
 
-    [Authorize(Policy = "ModeratePhotoRole")]
+    // [Authorize(Policy = "ModeratePhotoRole")]
     [HttpPost("reject-photo/{photoId}")]
     public async Task<ActionResult> RejectPhoto(int photoId)
     {
