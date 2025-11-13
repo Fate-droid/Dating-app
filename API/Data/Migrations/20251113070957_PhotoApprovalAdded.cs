@@ -10,19 +10,20 @@ namespace API.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            migrationBuilder.AddColumn<bool>(
                 name: "IsApproved",
                 table: "Photos",
-                newName: "IsAproved");
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "IsAproved",
-                table: "Photos",
-                newName: "IsApproved");
+            migrationBuilder.DropColumn(
+                name: "IsApproved",
+                table: "Photos");
         }
     }
 }

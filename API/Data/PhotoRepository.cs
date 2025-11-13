@@ -19,13 +19,13 @@ public class PhotoRepository(AppDbContext context) : IPhotoRepository
     {
        return await context.Photos
             .IgnoreQueryFilters()
-            .Where(p => p.IsAproved == false)
+            .Where(p => p.IsApproved == false)
             .Select(u => new PhotoForApprovalDto
             {
                 Id = u.Id,
                 UserId = u.MemberId,
                 Url = u.Url,
-                IsApproved = u.IsAproved
+                IsApproved = u.IsApproved
             }).ToListAsync();
     }
 

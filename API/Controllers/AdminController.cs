@@ -70,7 +70,7 @@ public class AdminController(UserManager<AppUser> userManager, IUnitOfWork uow,
 
         if (member == null) return BadRequest("Could not get member");
 
-        photo.IsAproved = true;
+        photo.IsApproved = true;
 
         if (member.ImageUrl == null)
         {

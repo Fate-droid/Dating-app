@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251113054735_PhotoApprovalAdded")]
+    [Migration("20251113070957_PhotoApprovalAdded")]
     partial class PhotoApprovalAdded
     {
         /// <inheritdoc />
@@ -227,7 +227,7 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsAproved")
+                    b.Property<bool>("IsApproved")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("MemberId")
