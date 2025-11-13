@@ -12,6 +12,7 @@ public class Photo
     public required string Url { get; set; }
 
     public string? PublicId { get; set; }
+    public bool IsAproved {get;set;}
 
     //Navigation property
     [JsonIgnore]
