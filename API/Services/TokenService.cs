@@ -32,7 +32,8 @@ public class TokenService(IConfiguration config, UserManager<AppUser> userManage
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(7),
+            Expires = DateTime.UtcNow.AddMinutes(15),
+
             SigningCredentials = creds
         };
         var tokenHandler = new JwtSecurityTokenHandler();
